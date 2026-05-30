@@ -5,7 +5,7 @@ import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { LoginSechema } from "../../Sechema/RegisterationSechema";
 import { Rings } from "react-loader-spinner";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthContextProvider";
 
 export default function Login() {
@@ -116,6 +116,9 @@ export default function Login() {
               </Button>
             </form>
             {msg}
+            <NavLink to='/singUp' className="text-sm text-blue-500">
+              Don't have an account? Sign Up
+            </NavLink>
           </div>
         </div>
       </div>
