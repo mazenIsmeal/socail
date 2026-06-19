@@ -7,9 +7,11 @@ import PostCardSkeleton from "../../components/PostCard/PostCardSkeleton/PostCar
 import AddPost from "../../components/AddPost/AddPost";
 import CommentWrapper from "../../components/CommentWrapper/CommentWrapper";
 import ProfileCover from "../../components/ProfileCover/ProfileCover";
+import PostCardShared from "../../components/SharePost/PostCardShared/PostCardShared";
 
 export default function ProfilePage() {
   const { userData } = useContext(AuthContext);
+  const [updatePostId, setUpdatePostId] = useState(null);
   const { data, isLoading, isFetched } = usePosts(
     ["userPost"],
     Boolean(userData?._id),
@@ -58,12 +60,14 @@ export default function ProfilePage() {
             <>
               {isFetched &&
                 data.data.posts.map((post) => (
+                  post.isShare ? <PostCardShared key={post._id} post={post} updatePostId={updatePostId} setUpdatePostId={setUpdatePostId} /> :
                   <PostCard
                     key={post.id}
                     post={post}
                     setActivePostId={setActivePostId}
                     isProfile
-                    setEditPost={setEditPost}
+                    updatePostId={updatePostId}
+                    setUpdatePostId={setUpdatePostId}
                   />
                 ))}
             </>

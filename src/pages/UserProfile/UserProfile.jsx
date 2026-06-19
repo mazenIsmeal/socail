@@ -9,7 +9,7 @@ import AddPost from "../../components/AddPost/AddPost";
 import CommentWrapper from "../../components/CommentWrapper/CommentWrapper";
 import ProfileCover from "../../components/ProfileCover/ProfileCover";
 import axios from "axios";
-import { headerObjData } from "../../Helpers/Headers";
+import { getHeaders } from "../../Helpers/Headers";
 import { useQuery } from "@tanstack/react-query";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import usePosts from "./../../CustomHooks/usePosts";
@@ -36,7 +36,7 @@ export default function UserProfile() {
     try {
       const response = axios.get(
         `https://route-posts.routemisr.com/users/${id}/profile`,
-        headerObjData,
+        getHeaders(),
       );
       console.log(response);
       return response;

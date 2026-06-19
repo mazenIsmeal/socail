@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
-import { headerObjData } from "../Helpers/Headers";
+import { getHeaders } from "../Helpers/Headers";
+import { useQuery } from "@tanstack/react-query";
 
 export const AuthContext = createContext();
 export default function AuthContextProvider({ children }) {
@@ -11,9 +12,27 @@ export default function AuthContextProvider({ children }) {
     try {
       const { data } = await axios.get(
         "https://route-posts.routemisr.com/users/profile-data",
-        headerObjData,
+        getHeaders(),
       );
       setUserData(data.data.user);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+      const { data: unreadCount} = useQuery({
+    queryFn: getNotificationsCount,
+    queryKey: ["notifications-unread-count"],
+  });
+
+      async function getNotificationsCount() {
+    try {
+      const response = await axios.get(
+        "https://route-posts.routemisr.com/notifications/unread-count",
+        getHeaders(),
+      );
+      console.log(response.data);
+      return response.data;
     } catch (error) {
       console.log(error);
     }
@@ -23,12 +42,12 @@ export default function AuthContextProvider({ children }) {
     if (token) {
       getLoggedData();
     } else {
-      setUserData(null); // ✅ امسح البيانات عند logout
+      setUserData(null);
     }
   }, [token]);
 
   return (
-    <AuthContext.Provider value={{ token, setToken, userData, getLoggedData }}>
+    <AuthContext.Provider value={{ token, setToken, userData, getLoggedData, unreadCount }}>
       {children}
     </AuthContext.Provider>
   );

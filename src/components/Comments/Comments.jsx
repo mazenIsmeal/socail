@@ -4,7 +4,7 @@ import { AuthContext } from "../../Contexts/AuthContextProvider";
 import { Dropdown, DropdownItem } from "flowbite-react";
 import { BsThreeDots } from "react-icons/bs";
 import axios from "axios";
-import { headerObjData } from "../../Helpers/Headers";
+import { getHeaders } from "../../Helpers/Headers";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
@@ -26,7 +26,7 @@ export default function Comments({ comment, setCommentUpdate, activePostId }) {
     try {
       const response = await axios.delete(
         `https://route-posts.routemisr.com/posts/${activePostId}/comments/${comment._id}`,
-        headerObjData,
+        getHeaders(),
       );
       console.log(response);
       return response;

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import React from "react";
-import { headerObjData } from "../Helpers/Headers";
+import { getHeaders } from "../Helpers/Headers";
 
 export default function usePosts(queryKey, isEnabled, endpount) {
   // usePosts(['allPosts'], true, posts)
@@ -15,9 +15,8 @@ export default function usePosts(queryKey, isEnabled, endpount) {
     try {
       const { data } = await axios.get(
         `https://route-posts.routemisr.com/${endpount}`,
-        headerObjData,
+        getHeaders(),
       );
-      console.log(data);
       return data;
     } catch (error) {
       console.log(error);

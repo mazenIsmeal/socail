@@ -9,6 +9,7 @@ import PostsGuard from "../Guard/PostsGuard";
 import SinglePost from "../pages/SinglePost/SinglePost";
 import Settings from "../pages/Settings/Settings";
 import UserProfile from "../pages/UserProfile/UserProfile";
+import Notifications from "../pages/Notifications/Notifications";
 
 export const router = createBrowserRouter([
   {
@@ -52,6 +53,14 @@ export const router = createBrowserRouter([
         element: (
           <PostsGuard>
             <Settings />
+          </PostsGuard>
+        ),
+      },
+      {
+        path: "notifications",
+        element: (
+          <PostsGuard>
+            <Notifications />
           </PostsGuard>
         ),
       },

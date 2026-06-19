@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Avatar } from "flowbite-react";
 import { FaUserFriends } from "react-icons/fa";
 import axios from "axios";
-import { headerObjData } from "../../Helpers/Headers";
+import { getHeaders } from "../../Helpers/Headers";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import SuggestedFriendsSkeleton from "./SuggestedFriendsSkeleton/SuggestedFriendsSkeleton";
@@ -20,9 +20,8 @@ export default function AddFriendSection({ isMobile = false }) {
     try {
       const { data } = await axios.get(
         "https://route-posts.routemisr.com/users/suggestions?limit=10",
-        headerObjData,
+        getHeaders(),
       );
-      console.log(data.data.suggestions);
       return data.data.suggestions;
     } catch (error) {
       console.log(error);
@@ -35,7 +34,7 @@ export default function AddFriendSection({ isMobile = false }) {
       const response = axios.put(
         `https://route-posts.routemisr.com/users/${id}/follow`,
         {},
-        headerObjData,
+        getHeaders(),
       );
       queryClient.invalidateQueries(["allFriends"]);
       console.log(response);

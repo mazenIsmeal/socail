@@ -4,7 +4,7 @@ import { FaCamera } from "react-icons/fa";
 import { FiMaximize2 } from "react-icons/fi";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { headerObjData } from "../../Helpers/Headers";
+import { getHeaders } from "../../Helpers/Headers";
 import { useQueryClient } from "@tanstack/react-query";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 
@@ -35,7 +35,7 @@ export default function ProfileCover({ data }) {
       const response = await axios.put(
         `https://route-posts.routemisr.com/users/upload-photo`,
         formData,
-        headerObjData,
+        getHeaders(),
       );
       await getLoggedData();
       queryClient.invalidateQueries(["userPost"]);
@@ -56,7 +56,7 @@ export default function ProfileCover({ data }) {
       const response = await axios.put(
         "https://route-posts.routemisr.com/users/upload-cover",
         formData,
-        headerObjData,
+        getHeaders(),
       );
       await getLoggedData();
       queryClient.invalidateQueries(["userPost"]);

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { IoKeySharp } from "react-icons/io5";
 import { SettingSechema } from "../../Sechema/RegisterationSechema";
 import axios from "axios";
-import { headerObjData } from "../../Helpers/Headers";
+import { getHeaders } from "../../Helpers/Headers";
 import toast from "react-hot-toast";
 
 export default function Settings() {
@@ -22,7 +22,7 @@ export default function Settings() {
       const response = await axios.patch(
         "https://route-posts.routemisr.com/users/change-password",
         values,
-        headerObjData,
+        getHeaders(),
       );
       reset();
       toast.success("password changed successfully");

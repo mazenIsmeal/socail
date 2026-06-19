@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Drawer, DrawerHeader, DrawerItems } from "flowbite-react";
 import axios from "axios";
-import { headerObjData } from "../../Helpers/Headers";
+import { getHeaders } from "../../Helpers/Headers";
 import { useQuery } from "@tanstack/react-query";
 import CommentsSkeleton from "../CommentsSkeleton/CommentsSkeleton";
 import Comments from "../Comments/Comments";
@@ -22,7 +22,7 @@ export default function CommentWrapper({ activePostId }) {
     try {
       const response = await axios.get(
         `https://route-posts.routemisr.com/posts/${activePostId}/comments?page=1&limit=10`,
-        headerObjData,
+        getHeaders(),
       );
       console.log(response);
       return response;

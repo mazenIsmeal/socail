@@ -1,46 +1,23 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Image, Smile, Send } from "lucide-react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { headerObjData } from "../../Helpers/Headers";
+import { getHeaders } from "../../Helpers/Headers";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { AuthContext } from "./../../Contexts/AuthContextProvider";
 
-export default function AddPost({ editPost }) {
+export default function AddPost() {
   const { userData } = useContext(AuthContext);
   const queryClient = useQueryClient();
-  const { register, handleSubmit, reset, setValue, getValues } = useForm({
+  const { register, handleSubmit, reset, watch } = useForm({
     defaultValues: {
       body: "",
       image: null,
     },
   });
 
-  useEffect(() => {
-    if (editPost) {
-      setValue("body", editPost.body);
-    }
-  }, [editPost]);
-
-  async function updatePost() {
-    try {
-      const formData = new FormData();
-      formData.append("body", getValues().body);
-      formData.append("image", getValues().image);
-      const response = await axios.put(
-        `https://route-posts.routemisr.com/posts/${editPost._id}`,
-        formData,
-        headerObjData,
-      );
-      console.log(response);
-      queryClient.invalidateQueries(["userPost"]);
-      queryClient.invalidateQueries(["allPosts"]);
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const imageFile = watch("image")?.[0];
 
   const { mutate } = useMutation({
     mutationFn: addPost,
@@ -65,9 +42,8 @@ export default function AddPost({ editPost }) {
       const response = await axios.post(
         "https://route-posts.routemisr.com/posts",
         formData,
-        headerObjData,
+        getHeaders(),
       );
-      console.log(response);
       reset();
       return response;
     } catch (error) {
@@ -116,29 +92,23 @@ export default function AddPost({ editPost }) {
               <Image size={18} />
               <span>Photo/video</span>
             </label>
+            <div>
+              {imageFile && (
+                <img
+                  src={URL.createObjectURL(imageFile)}
+                  alt="Preview"
+                  className="w-32 h-32 object-cover rounded-lg"
+                />
+              )}
+            </div>
           </div>
-          {editPost ? (
-            <>
-              <button
-                onClick={updatePost}
-                type="button"
-                className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-xl transition disabled:opacity-50"
-              >
-                <span>update</span>
-                <Send size={16} />
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                type="submit"
-                className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-xl transition disabled:opacity-50"
-              >
-                <span>Post</span>
-                <Send size={16} />
-              </button>
-            </>
-          )}
+          <button
+            type="submit"
+            className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-xl transition disabled:opacity-50"
+          >
+            <span>Post</span>
+            <Send size={16} />
+          </button>
         </div>
       </form>
     </div>

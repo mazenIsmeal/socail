@@ -5,13 +5,15 @@ import AddPost from "../../components/AddPost/AddPost";
 import PostCardSkeleton from "../../components/PostCard/PostCardSkeleton/PostCardSkeleton";
 import { useState } from "react";
 import axios from "axios";
-import { headerObjData } from "../../Helpers/Headers";
+import { getHeaders } from "../../Helpers/Headers";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRef, useEffect } from "react";
+import PostCardShared from "../../components/SharePost/PostCardShared/PostCardShared";
 
 export default function Posts() {
   const [editPost, setEditPost] = useState();
   const [feed, setFeed] = useState("following");
+  const [updatePostId, setUpdatePostId] = useState(null);
 
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
@@ -85,7 +87,7 @@ export default function Posts() {
     if (feedType === "saved") {
       const response = await axios.get(
         "https://route-posts.routemisr.com/users/bookmarks",
-        headerObjData,
+        getHeaders(),
       );
 
       return {
@@ -96,7 +98,7 @@ export default function Posts() {
 
     const response = await axios.get(
       `https://route-posts.routemisr.com/posts/feed?only=${feedType}&page=${pageParam}&limit=10`,
-      headerObjData,
+      getHeaders(),
     );
 
     return {
@@ -129,14 +131,25 @@ export default function Posts() {
                 </div>
               )}
 
-              {allPosts.map((post) => (
-                <PostCard
-                  key={post._id}
-                  post={post}
-                  feed={feed}
-                  setEditPost={setEditPost}
-                />
-              ))}
+              {allPosts.map((post) =>
+                post.isShare ? (
+                  <PostCardShared
+                    key={post._id}
+                    post={post}
+                    feed={feed}
+                    updatePostId={updatePostId}
+                    setUpdatePostId={setUpdatePostId}
+                  />
+                ) : (
+                  <PostCard
+                    key={post._id}
+                    post={post}
+                    feed={feed}
+                    updatePostId={updatePostId}
+                    setUpdatePostId={setUpdatePostId}
+                  />
+                ),
+              )}
               <div ref={observerRef} className="h-10">
                 {isFetchingNextPage && <PostCardSkeleton />}
               </div>

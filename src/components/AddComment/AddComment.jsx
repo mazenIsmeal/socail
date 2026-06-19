@@ -4,7 +4,7 @@ import { FaRegImage, FaRegSmile } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { headerObjData } from "../../Helpers/Headers";
+import { getHeaders } from "../../Helpers/Headers";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AuthContext } from "../../Contexts/AuthContextProvider";
 
@@ -34,7 +34,7 @@ export default function AddComment({ activePostId, commentUpdate }) {
       const response = await axios.put(
         `https://route-posts.routemisr.com/posts/${activePostId}/comments/${commentUpdate._id}`,
         formData,
-        headerObjData,
+        getHeaders(),
       );
       console.log(response);
       queryClient.invalidateQueries(["commentsPost", activePostId]);
@@ -67,7 +67,7 @@ export default function AddComment({ activePostId, commentUpdate }) {
       const response = await axios.post(
         `https://route-posts.routemisr.com/posts/${activePostId}/comments`,
         formData,
-        headerObjData,
+        getHeaders(),
       );
       console.log(response);
       reset();

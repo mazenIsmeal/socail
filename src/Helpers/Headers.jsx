@@ -1,3 +1,7 @@
-export const headerObjData = {
-  headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-};
+export function getHeaders() {
+  return {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  };
+}

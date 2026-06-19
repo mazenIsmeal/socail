@@ -11,11 +11,11 @@ import {
   NavbarToggle,
 } from "flowbite-react";
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthContextProvider.jsx";
 
 export default function AppNva() {
-  const { token, setToken, userData } = useContext(AuthContext);
+  const { token, setToken, userData, unreadCount } = useContext(AuthContext);
   const { name, email, photo } = userData || {};
 
   const navigate = useNavigate();
@@ -26,8 +26,8 @@ export default function AppNva() {
   }
   return (
     <>
-      <Navbar fluid rounded className="fixed top-0 left-0 right-0 z-1">
-        <NavbarBrand href="https://flowbite-react.com">
+      <Navbar fluid rounded className="fixed top-0 left-0 right-0 z-50">
+        <NavbarBrand as={Link} to="/">
           <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
             Social App
           </span>
@@ -62,12 +62,40 @@ export default function AppNva() {
         <NavbarCollapse>
           {token ? (
             <>
-              <NavbarLink as={Link} to="" active>
-                Posts
-              </NavbarLink>
-              <NavbarLink as={Link} to="/profile">
-                Profile
-              </NavbarLink>
+              <NavbarLink
+  as={NavLink}
+  to="/"
+  className={({ isActive }) =>
+    isActive ? "text-blue-600 font-bold" : ""
+  }
+>
+  Posts
+</NavbarLink>
+
+<NavbarLink
+  as={NavLink}
+  to="/profile"
+  className={({ isActive }) =>
+    isActive ? "text-blue-600 font-bold" : ""
+  }
+>
+  Profile
+</NavbarLink>
+
+<NavbarLink
+  as={NavLink}
+  to="/notifications"
+  className={({ isActive }) =>
+    isActive ? "text-blue-600 font-bold" : ""
+  }
+>
+  Notifications
+  {unreadCount?.data?.unreadCount > 0 && (
+    <span className="rounded-full px-2 py-0.5 text-xs bg-white text-[#1877f2]">
+      {unreadCount?.data?.unreadCount}
+    </span>
+  )}
+</NavbarLink>
             </>
           ) : (
             <>
